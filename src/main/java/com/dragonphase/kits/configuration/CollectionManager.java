@@ -68,7 +68,7 @@ public class CollectionManager {
     }
 
     public void reload() {
-        if (kitConfig != null && playerConfig != null) save();
+        //if (kitConfig != null && playerConfig != null) save();
         load();
     }
 
@@ -81,6 +81,7 @@ public class CollectionManager {
 
     public void addKit(Kit kit) {
         kitList.add(kit);
+        save();
     }
 
     public void removeKit(Kit kit) {

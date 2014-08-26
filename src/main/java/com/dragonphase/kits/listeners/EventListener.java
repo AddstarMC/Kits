@@ -97,7 +97,7 @@ public class EventListener implements Listener {
         String name = Utils.capitalize(inventoryName);
 
         plugin.getCollectionManager().getKit(name).setItems(inventory.getContents());
-
+        plugin.getCollectionManager().save();
         player.sendMessage(Message.show("Kit " + name + " edited.", MessageType.INFO));
 
     }

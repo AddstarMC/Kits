@@ -27,7 +27,8 @@ public class Kits extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getCollectionManager().save();
+    	//Don't save on unload, we save after every change
+        //getCollectionManager().save();
     }
 
     @Override
