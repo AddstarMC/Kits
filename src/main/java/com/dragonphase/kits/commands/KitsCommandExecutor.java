@@ -52,6 +52,8 @@ public class KitsCommandExecutor implements CommandExecutor {
         List<CommandDescription> commands = new ArrayList<CommandDescription>();
 
         for (Kit kit : plugin.getCollectionManager().getKitList()) {
+        	if (sender instanceof Player && !Permissions.hasPermission((Player)sender, Permissions.KITS_SPAWN, kit.getName())) continue;
+        	
             List<String> lines = new ArrayList<String>();
             List<String> items = new ArrayList<String>();
             for (ItemStack item : kit.getItems()) {
