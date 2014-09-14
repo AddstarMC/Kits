@@ -142,15 +142,25 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>craftbukkit</artifactId>
-            <version>1.7.10-R0.1-SNAPSHOT</version>
-        </dependency>
+    	<dependency>
+    		<groupId>org.bukkit</groupId>
+    		<artifactId>bukkit</artifactId>
+    		<version>1.7.10-R0.1-SNAPSHOT</version>
+    	</dependency>
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
             <version>0.1.5</version>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>craftbukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -162,6 +172,12 @@
             <artifactId>metrics</artifactId>
             <version>R7</version>
             <scope>compile</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>bukkit</artifactId>
+            		<groupId>org.bukkit</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

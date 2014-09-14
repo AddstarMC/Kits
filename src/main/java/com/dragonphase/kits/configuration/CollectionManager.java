@@ -3,8 +3,7 @@ package com.dragonphase.kits.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.org.apache.commons.lang3.ArrayUtils;
-
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
