@@ -138,6 +138,16 @@
             <id>gravity-repo</id>
             <url>http://repo.gravitydevelopment.net</url>
         </repository>
+        <repository>
+          <id>addstar-snapshot-repo</id>
+          <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+        </repository>
     </repositories>
 
     <dependencies>
