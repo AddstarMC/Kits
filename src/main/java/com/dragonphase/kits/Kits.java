@@ -30,7 +30,7 @@ public class Kits extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getCollectionManager().save();
+        //getCollectionManager().save();   // Dont save on unload, doesnt play nice with multi-server 
 
         // Nullify static references to the plugin
 

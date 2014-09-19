@@ -92,7 +92,7 @@ public class EventListener implements Listener {
         String inventoryName = inventory.getName().toLowerCase().replace("new kit: ", "");
 
         Kit kit = plugin.getKitManager().createKit(inventoryName, inventory.getContents());
-
+        plugin.getCollectionManager().save();
         player.sendMessage(Message.show("Kit " + kit.getName() + " created.", MessageType.INFO));
     }
 

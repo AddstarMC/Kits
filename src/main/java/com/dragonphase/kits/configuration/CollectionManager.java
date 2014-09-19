@@ -50,7 +50,7 @@ public class CollectionManager {
     }
 
     public void reload() {
-        if (kitConfig != null && playerConfig != null) save();
+        //if (kitConfig != null && playerConfig != null) save();  // Dont save on unload, doesnt play nice with multi-server
         load();
     }
 
@@ -63,6 +63,7 @@ public class CollectionManager {
 
     public void addKit(Kit kit) {
         kits.add(kit);
+        save();
     }
 
     public void removeKit(Kit kit) {
