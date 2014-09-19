@@ -54,32 +54,30 @@ public class KitCommandExecutor implements CommandExecutor {
 
     private void handleBaseCommand(CommandSender sender) {
         if (sender instanceof Player) {
-            sender.sendMessage(Message.show("", "Available commands:", MessageType.INFO));
-            Message.showMessage((Player) sender, Message.show("  ", "/kits", MessageType.INFO), "List the kits available to you.");
-            Message.showMessage((Player) sender, Message.show("  ", "/kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Spawn the kit with the specified name.");
-            if (Permissions.checkPermission((Player)sender, Permissions.KITS_ADMIN)) {
-                Message.showMessage((Player) sender, Message.show("  ", "/kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "With the specified flags. Example:", "/kit basic -announce");
-                Message.showMessage((Player) sender, Message.show("  ", "/kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.");
-                Message.showMessage((Player) sender, Message.show("  ", "/kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.", "With the specified flags. Example:", "/kit basic bob -announce");
-            	Message.showMessage((Player) sender, Message.show("  ", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
-            	Message.showMessage((Player) sender, Message.show("  ", "/kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
-            	Message.showMessage((Player) sender, Message.show("  ", "/kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
-            	Message.showMessage((Player) sender, Message.show("  ", "/kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
+            sender.sendMessage(Message.show("", "Available commands:", MessageType.MESSAGE));
+            Message.showMessage((Player) sender, Message.show("", "  /kits", MessageType.INFO), "List the kits available to you.");
+            Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Spawn the kit with the specified name.");
+            if (sender.hasPermission(Permissions.KITS_ADMIN)) {
+                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "With the specified flags. Example:", "/kit basic -announce");
+                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.");
+                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.", "With the specified flags. Example:", "/kit basic bob -announce");
+            	Message.showMessage((Player) sender, Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
+            	Message.showMessage((Player) sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
+            	Message.showMessage((Player) sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
+            	Message.showMessage((Player) sender, Message.show("", "  /kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
             }
         } else {
-            sender.sendMessage(Message.show("", "Available commands:", MessageType.INFO));
-            sender.sendMessage(Message.show("", "  /kits", MessageType.INFO));
-            sender.sendMessage(Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            if (Permissions.checkPermission((Player)sender, Permissions.KITS_ADMIN)) {
-	            sender.sendMessage(Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO));
-	            sender.sendMessage(Message.show("", "  /kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            }
+            sender.sendMessage(Message.show("", "Available commands:", MessageType.MESSAGE));
+            sender.sendMessage(Message.show("", "/kits", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO));
+            sender.sendMessage(Message.show("", "/kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO));
         }
     }
 

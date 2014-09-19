@@ -25,7 +25,7 @@ public class Message {
     }
 
     public static String show(String prefix, String message, MessageType type) {
-        return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.GOLD : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
+        return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.YELLOW : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
     }
 
     //FancyMessage commands
