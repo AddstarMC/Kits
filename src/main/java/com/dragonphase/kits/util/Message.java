@@ -25,7 +25,7 @@ public class Message {
     }
 
     public static String show(String prefix, String message, MessageType type) {
-        return ChatColor.DARK_GRAY + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.GRAY : type == MessageType.INFO ? ChatColor.DARK_AQUA : ChatColor.RED) + message;
+        return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.GOLD : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
     }
 
     //FancyMessage commands
@@ -53,7 +53,7 @@ public class Message {
     }
 
     public static void showCommand(Player player, String prefix, CommandDescription... commands) {
-        FancyMessage message = new FancyMessage(prefix).color(ChatColor.DARK_GRAY);
+        FancyMessage message = new FancyMessage(prefix).color(ChatColor.GOLD);
 
         List<CommandDescription> commandList = new ArrayList<CommandDescription>(Arrays.asList(commands));
 

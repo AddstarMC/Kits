@@ -82,21 +82,21 @@ public class KitsCommandExecutor implements CommandExecutor {
                 items.add(item.getAmount() + " x " + (item.hasItemMeta() ? item.getItemMeta().getDisplayName() : Utils.capitalize(item.getType().name())));
             }
             
-            lines.add(ChatColor.DARK_AQUA + "Number of items: " + ChatColor.GRAY + items.size());
-            lines.add(ChatColor.DARK_AQUA + "Delay: " + (kit.getDelay() <= 0 ? ChatColor.GRAY + "no delay" : ChatColor.GRAY + Time.toReadableFormat(kit.getDelay(), false, false)));
-            lines.add(ChatColor.DARK_AQUA + "Clear: " + ChatColor.GRAY + kit.getClear());
-            lines.add(ChatColor.DARK_AQUA + "Overwrite: " + ChatColor.GRAY + kit.getOverwrite());
-            lines.add(ChatColor.DARK_AQUA + "Announce: " + ChatColor.GRAY + kit.getAnnounce());
+            lines.add(ChatColor.GOLD + "Number of items: " + ChatColor.GRAY + items.size());
+            lines.add(ChatColor.GOLD + "Delay: " + (kit.getDelay() <= 0 ? ChatColor.GRAY + "no delay" : ChatColor.GRAY + Time.toReadableFormat(kit.getDelay(), false, false)));
+            lines.add(ChatColor.GOLD + "Clear: " + ChatColor.GRAY + kit.getClear());
+            lines.add(ChatColor.GOLD + "Overwrite: " + ChatColor.GRAY + kit.getOverwrite());
+            lines.add(ChatColor.GOLD + "Announce: " + ChatColor.GRAY + kit.getAnnounce());
             
             if (delayed) {
                 lines.add(" ");
-                lines.add(ChatColor.DARK_AQUA + "Remaining time: " + ChatColor.RED + plugin.getCollectionManager().getDelayedPlayer(player).getRemainingTime(kit));
+                lines.add(ChatColor.GOLD + "Remaining time: " + ChatColor.RED + plugin.getCollectionManager().getDelayedPlayer(player).getRemainingTime(kit));
             }
             
-            commands.add(new CommandDescription((delayed ? ChatColor.RED + "" + ChatColor.STRIKETHROUGH : ChatColor.DARK_AQUA + "") + kit.getName(), delayed ? "" : "/kit " + kit.getName(), lines.toArray(new String[lines.size()])));
+            commands.add(new CommandDescription((delayed ? ChatColor.RED + "" + ChatColor.STRIKETHROUGH : ChatColor.GOLD + "") + kit.getName(), delayed ? "" : "/kit " + kit.getName(), lines.toArray(new String[lines.size()])));
         }
 
-        player.sendMessage(ChatColor.DARK_GRAY + "Kits available to you:");
+        player.sendMessage(ChatColor.YELLOW + "Kits available to you:");
         Message.showCommand(player, " ", commands.toArray(new CommandDescription[commands.size()]));
     }
 
