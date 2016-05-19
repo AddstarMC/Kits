@@ -84,7 +84,7 @@ public class KitCommandExecutor implements CommandExecutor {
     // Create Kit
 
     private void createKit(CommandSender sender, String[] args) {
-        if (!isPlayer(sender)) return;
+        if (notPlayer(sender)) return;
 
         Player player = (Player) sender;
 
@@ -117,7 +117,7 @@ public class KitCommandExecutor implements CommandExecutor {
     // Edit Kit
 
     private void editKit(CommandSender sender, String[] args) {
-        if (!isPlayer(sender)) return;
+        if (notPlayer(sender)) return;
 
         Player player = (Player) sender;
 
@@ -217,7 +217,7 @@ public class KitCommandExecutor implements CommandExecutor {
     // Remove Kit
 
     private void removeKit(CommandSender sender, String[] args) {
-        if (!isPlayer(sender)) return;
+        if (notPlayer(sender)) return;
 
         Player player = (Player) sender;
 
@@ -289,7 +289,7 @@ public class KitCommandExecutor implements CommandExecutor {
     }
 
     private boolean spawnKit(CommandSender sender, Player player, Kit kit, String flags) {
-        List<String> flagList = StringUtils.isEmpty(flags) ? new ArrayList<String>() : Arrays.asList(flags.split(" "));
+        List<String> flagList = StringUtils.isEmpty(flags) ? new ArrayList<>() : Arrays.asList(flags.split(" "));
         Map<String, Boolean> Flags = new HashMap<>();
 
         for (String flag : flagList) {
@@ -346,12 +346,11 @@ public class KitCommandExecutor implements CommandExecutor {
 
     // Helper methods
 
-    private boolean isPlayer(CommandSender sender) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.show("", "Command must be issued ingame.", MessageType.WARNING));
+    private boolean notPlayer(CommandSender sender) {
+        if (sender instanceof Player) {
             return false;
         }
-
+        sender.sendMessage(Message.show("", "Command must be issued ingame.", MessageType.WARNING));
         return true;
     }
 

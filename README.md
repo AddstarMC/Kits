@@ -8,26 +8,6 @@ Kits is a simple yet deceptively powerful plugin allowing you to create, edit an
 
 If you want to contribute to the development of Kits, fork the repository and commit new changes. Don't forget to submit a pull request.
 
-## API
-
-### Installation
-
-Use Maven. Add the Kits repository and dependency entries to your `pom.xml`.
-
-```xml
-<repository>
-    <id>franga2000-repo</id>
-    <url>http://repo.franga2000.com/public/</url>
-</repository>
-
-<dependency>
-    <groupId>com.dragonphase</groupId>
-    <artifactId>Kits</artifactId>
-    <version>2.2</version>
-    <scope>provided</scope>
-</dependency>
-```
-
 ### Usage
 
 Add Kits as a dependency inside your `plugin.yml` file. Retrieve the Kits instance inside your onEnable method and use the methods provided within KitManager:

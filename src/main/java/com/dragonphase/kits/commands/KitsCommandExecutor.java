@@ -2,6 +2,7 @@ package com.dragonphase.kits.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -83,7 +84,7 @@ public class KitsCommandExecutor implements CommandExecutor {
             }
             
             lines.add(ChatColor.GOLD + "Number of items: " + ChatColor.GRAY + items.size());
-            lines.add(ChatColor.GOLD + "Delay: " + (kit.getDelay() <= 0 ? ChatColor.GRAY + "no delay" : ChatColor.GRAY + Time.toReadableFormat(kit.getDelay(), false, false)));
+            lines.add(ChatColor.GOLD + "Delay: " + (kit.getDelay() <= 0 ? ChatColor.GRAY + "no delay" : ChatColor.GRAY + Time.fromMilliseconds(kit.getDelay()).toReadableFormat(false)));
             lines.add(ChatColor.GOLD + "Clear: " + ChatColor.GRAY + kit.getClear());
             lines.add(ChatColor.GOLD + "Overwrite: " + ChatColor.GRAY + kit.getOverwrite());
             lines.add(ChatColor.GOLD + "Announce: " + ChatColor.GRAY + kit.getAnnounce());

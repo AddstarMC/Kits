@@ -1,12 +1,7 @@
 package com.dragonphase.kits;
 
-import net.gravitydevelopment.updater.Updater;
-import net.gravitydevelopment.updater.Updater.UpdateType;
-
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
-import org.mcstats.Metrics.Plotter;
 
 import com.dragonphase.kits.api.Kit;
 import com.dragonphase.kits.api.KitManager;
@@ -30,7 +25,7 @@ public class Kits extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //getCollectionManager().save();   // Dont save on unload, doesnt play nice with multi-server 
+        //getCollectionManager().save();   // Don't save on unload, doesn't play nice with multi-server
 
         instance = null;
     }
@@ -42,10 +37,7 @@ public class Kits extends JavaPlugin {
         registerEvents();
         registerCommands();
         registerConfigurationSerializables();
-        registerMetrics();
         registerAutoSave();
-
-        checkForUpdates();
 
         reload();
 
@@ -76,21 +68,6 @@ public class Kits extends JavaPlugin {
         ConfigurationSerialization.registerClass(DelayedPlayer.class);
     }
 
-    private void registerMetrics() {
-        try {
-            Metrics metrics = new Metrics(this);
-
-            metrics.createGraph("Kits").addPlotter(new Plotter("Number of kits created") {
-                public int getValue() {
-                    return getCollectionManager().getKits().size();
-                }
-            });
-
-            metrics.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void registerAutoSave() {
         if (!config.getBoolean("autosave.enabled")) {
@@ -106,17 +83,6 @@ public class Kits extends JavaPlugin {
         getLogger().info("AutoSave set to execute every " + time.toReadableFormat(false));
     }
 
-    private void checkForUpdates() {
-        if (!config.getBoolean("updater.enabled")) {
-            return;
-        }
-
-        UpdateType type = config.getString("updater.type").equalsIgnoreCase("default") ? UpdateType.DEFAULT : config.getString("updater.type").equalsIgnoreCase("force") ? UpdateType.NO_VERSION_CHECK : UpdateType.NO_DOWNLOAD;
-
-        boolean silent = !config.getBoolean("updater.silent");
-
-        new Updater(this, 51690, this.getFile(), type, silent);
-    }
 
     public void reload() {
         registerConfig();

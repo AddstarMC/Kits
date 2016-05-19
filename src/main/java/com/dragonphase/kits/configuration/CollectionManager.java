@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -59,7 +58,7 @@ public class CollectionManager {
     }
 
     public void reload() {
-        //if (kitConfig != null && playerConfig != null) save();  // Dont save on unload, doesnt play nice with multi-server
+        //if (kitConfig != null && playerConfig != null) save();  // Don't save on unload, doesn't play nice with multi-server
         load();
     }
 
@@ -104,7 +103,7 @@ public class CollectionManager {
             player.sortKits(this);
     }
     
-    //Migrate kits from pre-Kits 1.7. Resulting inventories are somewhat buggy but can easily be edited ingame.
+    //Migrate kits from pre-Kits 1.7. Resulting inventories are somewhat buggy but can easily be edited in game.
 
     @SuppressWarnings("unchecked")
     private void migrateOldKitsFile() {
