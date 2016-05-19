@@ -28,7 +28,7 @@ public class Message {
         return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.YELLOW : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
     }
 
-    //FancyMessage commands
+    // FancyMessage commands
 
     public static void showMessage(Player player, String title, String... args) {
         if (args.length < 1) {
@@ -55,7 +55,7 @@ public class Message {
     public static void showCommand(Player player, String prefix, CommandDescription... commands) {
         FancyMessage message = new FancyMessage(prefix).color(ChatColor.GOLD);
 
-        List<CommandDescription> commandList = new ArrayList<CommandDescription>(Arrays.asList(commands));
+        List<CommandDescription> commandList = new ArrayList<>(Arrays.asList(commands));
 
         for (CommandDescription command : commandList) {
             if (command.getArgs().length < 1) {
@@ -63,14 +63,11 @@ public class Message {
                 return;
             }
 
-            message = message.then(command.getTitle())
-                    .itemTooltip(getMessage(command.getArgs()));
-            
-            if (!command.getCommand().isEmpty())
-                message = message.command(command.getCommand());
+            message = message.then(command.getTitle()).itemTooltip(getMessage(command.getArgs()));
 
-            if (commandList.get(commandList.size() - 1) != command)
-                message = message.then(", ").color(ChatColor.GRAY);
+            if (!command.getCommand().isEmpty()) message = message.command(command.getCommand());
+
+            if (commandList.get(commandList.size() - 1) != command) message = message.then(", ").color(ChatColor.GRAY);
 
         }
 
@@ -82,7 +79,7 @@ public class Message {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.RESET + args[0]);
 
-        List<String> lore = new ArrayList<String>(Arrays.asList(Utils.trim(args)));
+        List<String> lore = new ArrayList<>(Arrays.asList(Utils.trim(args)));
         for (String line : lore)
             lore.set(lore.indexOf(line), ChatColor.RESET + line);
 

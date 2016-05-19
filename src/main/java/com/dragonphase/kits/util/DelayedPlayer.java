@@ -14,29 +14,28 @@ import com.dragonphase.kits.configuration.CollectionManager;
 
 public class DelayedPlayer implements ConfigurationSerializable {
 
-    private UUID playerUniqueId;
-    private HashMap<String, Long> kits;
+    private final UUID playerUniqueId;
+    private final Map<String, Long> kits = new HashMap<>();
 
     public DelayedPlayer(Player player) {
         playerUniqueId = player.getUniqueId();
-        this.kits = new HashMap<String, Long>();
     }
 
-    public DelayedPlayer(UUID uuid, HashMap<String, Long> kits) {
+    public DelayedPlayer(UUID uuid, Map<String, Long> kits) {
         this.playerUniqueId = uuid;
-        this.kits = new HashMap<String, Long>(kits);
+        this.kits.putAll(kits);
     }
-    
+
     @SuppressWarnings("unchecked")
     public DelayedPlayer(Map<String, Object> args) {
-        this(UUID.fromString((String) args.get("player")), (HashMap<String, Long>) args.get("kits"));
+        this(UUID.fromString((String) args.get("player")), (Map<String, Long>) args.get("kits"));
     }
-    
+
     public UUID getUniqueId() {
         return playerUniqueId;
     }
-    
-    public HashMap<String, Long> getKits() {
+
+    public Map<String, Long> getKits() {
         return kits;
     }
 
@@ -52,26 +51,26 @@ public class DelayedPlayer implements ConfigurationSerializable {
         }
         return delayed;
     }
-    
-    public String getRemainingTime(Kit kit){
+
+    public String getRemainingTime(Kit kit) {
         if (!playerDelayed(kit)) return "";
-        
-        return Time.toReadableFormat(kit.getDelay() - (System.currentTimeMillis() - getKits().get(kit.getName())), false, false);
+
+        return Time.fromMilliseconds(kit.getDelay() - (System.currentTimeMillis() - getKits().get(kit.getName()))).toReadableFormat(false);
     }
 
     public void sortKits(CollectionManager manager) {
-        Iterator<Entry<String, Long>> iter = getKits().entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<String, Long> entry = iter.next();
+        Iterator<Entry<String, Long>> iterator = getKits().entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry<String, Long> entry = iterator.next();
             if (manager.getKit(entry.getKey()) == null || (System.currentTimeMillis() - entry.getValue() >= manager.getKit(entry.getKey()).getDelay())) {
-                iter.remove();
+                iterator.remove();
             }
         }
     }
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
 
         result.put("player", getUniqueId().toString());
         result.put("kits", getKits());

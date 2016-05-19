@@ -1,6 +1,8 @@
 package com.dragonphase.kits.configuration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -13,19 +15,19 @@ import com.dragonphase.kits.util.DelayedPlayer;
 
 public class CollectionManager {
     
-    private Kits plugin;
+    private final Kits plugin;
 
     public Config kitConfig;
-    public List<Kit> kits;
+    public final List<Kit> kits;
 
     public Config playerConfig;
-    public List<DelayedPlayer> delayedPlayers;
+    public final List<DelayedPlayer> delayedPlayers;
 
     public CollectionManager(Kits instance) {
         plugin = instance;
         
-        kits = new ArrayList<Kit>();
-        delayedPlayers = new ArrayList<DelayedPlayer>();
+        kits = new ArrayList<>();
+        delayedPlayers = new ArrayList<>();
     }
 
     public void save() {
@@ -42,10 +44,18 @@ public class CollectionManager {
     public void load() {
         kitConfig = new Config(plugin, "kits");
         migrateOldKitsFile();
-        kits = kitConfig.get("kits") == null ? new ArrayList<Kit>() : (List<Kit>) kitConfig.get("kits");
-
         playerConfig = new Config(plugin, "players");
-        delayedPlayers = playerConfig.get("players") == null ? new ArrayList<DelayedPlayer>() : (List<DelayedPlayer>) playerConfig.getList("players");
+
+        kits.clear();
+        delayedPlayers.clear();
+
+        if(kitConfig.get("kits") != null) {
+            kits.addAll((List<Kit>) kitConfig.getList("kits"));
+    }
+
+        if(playerConfig.get("players") != null) {
+            delayedPlayers.addAll((List<DelayedPlayer>) playerConfig.getList("players"));
+        }
     }
 
     public void reload() {
@@ -100,11 +110,11 @@ public class CollectionManager {
     private void migrateOldKitsFile() {
         if (kitConfig.contains("kits")) return;
 
-        List<Kit> newKits = new ArrayList<Kit>();
+        List<Kit> newKits = new ArrayList<>();
 
         for (String key : kitConfig.getKeys(false)) {
             ItemStack[] items = ((ArrayList<ItemStack>) kitConfig.get(key + ".kit")).toArray(new ItemStack[((ArrayList<ItemStack>) kitConfig.get(key + ".kit")).size()]);
-            ArrayUtils.reverse(items);
+            Collections.reverse(Arrays.asList(items));
             newKits.add(new Kit(key, items, kitConfig.getLong(key + ".delay"), true, kitConfig.getBoolean(key + ".overwrite"), true));
         }
 

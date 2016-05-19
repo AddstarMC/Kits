@@ -21,7 +21,7 @@ import com.dragonphase.kits.util.Utils;
 import com.dragonphase.kits.util.Message.MessageType;
 
 public class KitsCommandExecutor implements CommandExecutor {
-    private Kits plugin;
+    private final Kits plugin;
 
     public KitsCommandExecutor(Kits instance) {
         plugin = instance;
@@ -55,7 +55,7 @@ public class KitsCommandExecutor implements CommandExecutor {
         if (!(sender instanceof Player)) {
             String message = "Available kits: ";
             
-            List<String> kitNames = new ArrayList<String>();
+            List<String> kitNames = new ArrayList<>();
             for (Kit kit : plugin.getCollectionManager().getKits()) {
                 kitNames.add(ChatColor.DARK_AQUA + kit.getName());
             }
@@ -67,15 +67,15 @@ public class KitsCommandExecutor implements CommandExecutor {
         
         Player player = (Player) sender;
 
-        List<CommandDescription> commands = new ArrayList<CommandDescription>();
+        List<CommandDescription> commands = new ArrayList<>();
 
         for (Kit kit : plugin.getCollectionManager().getKits()) {
             if (!Permissions.hasPermission(player, Permissions.KITS_SPAWN, kit.getName())) continue;
             
             boolean delayed = plugin.getCollectionManager().getDelayedPlayer(player).playerDelayed(kit);
             
-            List<String> lines = new ArrayList<String>();
-            List<String> items = new ArrayList<String>();
+            List<String> lines = new ArrayList<>();
+            List<String> items = new ArrayList<>();
             
             for (ItemStack item : kit.getItems()) {
                 if (item == null) continue;

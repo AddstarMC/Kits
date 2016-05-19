@@ -17,7 +17,7 @@
 updater:
   enabled: true
   silent: true
-  type: default
+  type: check
 autosave:
   enabled: true
   interval: 30m

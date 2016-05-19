@@ -5,9 +5,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.dragonphase.kits.Kits;
 
 public class AutoSave extends BukkitRunnable {
-    
+
     private final Kits plugin;
-    
+
     public AutoSave(Kits instance) {
         plugin = instance;
     }
@@ -15,10 +15,10 @@ public class AutoSave extends BukkitRunnable {
     @Override
     public void run() {
         plugin.getLogger().info("AutoSaving Kits configurations");
-        
+
         plugin.reload();
-        
+
         plugin.getLogger().info("AutoSave complete");
     }
-    
+
 }

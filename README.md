@@ -16,14 +16,14 @@ Use Maven. Add the Kits repository and dependency entries to your `pom.xml`.
 
 ```xml
 <repository>
-    <id>Kits</id>
-    <url>https://raw.github.com/dragonphase/Kits/mvn-repo/</url>
+    <id>franga2000-repo</id>
+    <url>http://repo.franga2000.com/public/</url>
 </repository>
 
 <dependency>
     <groupId>com.dragonphase</groupId>
     <artifactId>Kits</artifactId>
-    <version>2.0.1</version>
+    <version>2.2</version>
     <scope>provided</scope>
 </dependency>
 ```

@@ -10,7 +10,7 @@ import com.dragonphase.kits.api.Kit;
 public class PlayerSpawnKitEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
-    private Kit kit;
+    private final Kit kit;
     private boolean clear, overwrite, announce;
     private long delay;
     private boolean cancelled;
@@ -43,16 +43,16 @@ public class PlayerSpawnKitEvent extends PlayerEvent implements Cancellable {
         return handlers;
     }
 
-    //Kit methods
+    // Kit methods
 
     public Kit getKit() {
         return kit;
     }
-    
+
     public boolean getClear() {
         return clear;
     }
-    
+
     public void setClear(boolean clear) {
         this.clear = clear;
     }
@@ -60,24 +60,24 @@ public class PlayerSpawnKitEvent extends PlayerEvent implements Cancellable {
     public boolean getOverwrite() {
         return overwrite;
     }
-    
-    public void setOverwrite(boolean overwrite){
+
+    public void setOverwrite(boolean overwrite) {
         this.overwrite = overwrite;
     }
 
     public boolean getAnnounce() {
         return announce;
     }
-    
-    public void setAnnounce(boolean announce){
+
+    public void setAnnounce(boolean announce) {
         this.announce = announce;
     }
 
     public long getDelay() {
         return delay;
     }
-    
-    public void setDelay(long delay){
+
+    public void setDelay(long delay) {
         this.delay = delay;
     }
 }

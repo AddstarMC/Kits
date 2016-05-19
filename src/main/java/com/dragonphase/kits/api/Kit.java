@@ -1,11 +1,11 @@
 package com.dragonphase.kits.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Kit implements ConfigurationSerializable {
 
@@ -22,18 +22,18 @@ public class Kit implements ConfigurationSerializable {
         setAnnounce(announce);
         setItems(items);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Kit(Map<String, Object> args) {
         setName((String) args.get("name"));
-        setItems(((ArrayList<ItemStack>) args.get("items")).toArray(new ItemStack[((ArrayList<ItemStack>) args.get("items")).size()]));
+        setItems(((List<ItemStack>) args.get("items")).toArray(new ItemStack[((List<ItemStack>) args.get("items")).size()]));
         setClear((Boolean) (args.containsKey("clear") ? args.get("clear") : true));
         setOverwrite((Boolean) (args.containsKey("overwrite") ? args.get("overwrite") : true));
         setAnnounce((Boolean) (args.containsKey("announce") ? args.get("announce") : true));
-        
-        try{
+
+        try {
             setDelay((Long) (args.containsKey("delay") ? args.get("delay") : 0));
-        }catch (Exception ex){
+        } catch (Exception ex) {
             setDelay((Integer) (args.containsKey("delay") ? args.get("delay") : 0));
         }
     }
@@ -53,11 +53,11 @@ public class Kit implements ConfigurationSerializable {
     public void setDelay(long delay) {
         this.delay = delay;
     }
-    
+
     public boolean getClear() {
         return clear;
     }
-    
+
     public void setClear(boolean clear) {
         this.clear = clear;
     }
@@ -88,7 +88,7 @@ public class Kit implements ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
 
         result.put("name", getName());
         result.put("delay", getDelay());

@@ -22,7 +22,7 @@ import com.dragonphase.kits.util.Time;
 public class Kits extends JavaPlugin {
 
     private static Kits instance;
-    
+
     private Config config;
 
     private KitManager kitManager;
@@ -31,8 +31,6 @@ public class Kits extends JavaPlugin {
     @Override
     public void onDisable() {
         //getCollectionManager().save();   // Dont save on unload, doesnt play nice with multi-server 
-
-        // Nullify static references to the plugin
 
         instance = null;
     }
@@ -46,76 +44,77 @@ public class Kits extends JavaPlugin {
         registerConfigurationSerializables();
         registerMetrics();
         registerAutoSave();
-        
+
         checkForUpdates();
-        
+
         reload();
-        
+
         instance = this;
     }
-    
+
     private void registerConfig() {
         config = new Config(this, "config");
+        config.copyDefaults();
     }
-    
+
     private void registerManagers() {
         kitManager = new KitManager(this);
         collectionManager = new CollectionManager(this);
     }
-    
+
     private void registerEvents() {
         getServer().getPluginManager().registerEvents(new EventListener(this), this);
     }
-    
+
     private void registerCommands() {
         getCommand("kits").setExecutor(new KitsCommandExecutor(this));
         getCommand("kit").setExecutor(new KitCommandExecutor(this));
     }
-    
+
     private void registerConfigurationSerializables() {
         ConfigurationSerialization.registerClass(Kit.class);
         ConfigurationSerialization.registerClass(DelayedPlayer.class);
     }
-    
+
     private void registerMetrics() {
         try {
             Metrics metrics = new Metrics(this);
-            
+
             metrics.createGraph("Kits").addPlotter(new Plotter("Number of kits created") {
                 public int getValue() {
                     return getCollectionManager().getKits().size();
                 }
             });
-            
+
             metrics.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     private void registerAutoSave() {
         if (!config.getBoolean("autosave.enabled")) {
             return;
         }
-        
-        long interval = new Time(config.getString("autosave.interval")).getMilliseconds();
-        
-        new AutoSave(this).runTaskTimer(this, (interval*20)/1000, (interval*20)/1000);
+
+        Time time = Time.fromExpression(config.getString("autosave.interval"));
+
+        long interval = time.getTotalMilliseconds();
+
+        new AutoSave(this).runTaskTimer(this, (interval * 20) / 1000, (interval * 20) / 1000);
+
+        getLogger().info("AutoSave set to execute every " + time.toReadableFormat(false));
     }
-    
+
     private void checkForUpdates() {
         if (!config.getBoolean("updater.enabled")) {
             return;
         }
-        
-        UpdateType type = config.getString("updater.type").equalsIgnoreCase("default")
-                ? UpdateType.DEFAULT
-                : config.getString("updater.type").equalsIgnoreCase("force")
-                ? UpdateType.NO_VERSION_CHECK
-                : UpdateType.NO_DOWNLOAD;
-        
+
+        UpdateType type = config.getString("updater.type").equalsIgnoreCase("default") ? UpdateType.DEFAULT : config.getString("updater.type").equalsIgnoreCase("force") ? UpdateType.NO_VERSION_CHECK : UpdateType.NO_DOWNLOAD;
+
         boolean silent = !config.getBoolean("updater.silent");
-        
+
         new Updater(this, 51690, this.getFile(), type, silent);
     }
 

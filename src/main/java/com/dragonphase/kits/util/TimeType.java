@@ -1,8 +1,7 @@
 package com.dragonphase.kits.util;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 public enum TimeType {
     YEARS("y"),
@@ -12,22 +11,26 @@ public enum TimeType {
     MINUTES("m"),
     SECONDS("s"),
     MILLISECONDS("ms");
-    
-    private final String name;
-    
-    private TimeType(String name) {
-        this.name = name;
+
+    private final String value;
+
+    TimeType(String value) {
+        this.value = value;
     }
-    
-    private static final Map<String, TimeType> BY_NAME = Maps.newHashMap();
-    
-    public static TimeType match(String name) {
-        return BY_NAME.get(name);
+
+    public String getValue() {
+        return value;
     }
-    
+
+    private static final Map<String, TimeType> BY_VALUE = new HashMap<>();
+
+    public static TimeType match(String value) {
+        return BY_VALUE.containsKey(value.toLowerCase()) ? BY_VALUE.get(value.toLowerCase()) : TimeType.valueOf((value + (value.toLowerCase().endsWith("s") ? "" : "s")).toUpperCase());
+    }
+
     static {
         for (TimeType type : TimeType.values()) {
-            BY_NAME.put(type.name, type);
+            BY_VALUE.put(type.getValue(), type);
         }
     }
 }

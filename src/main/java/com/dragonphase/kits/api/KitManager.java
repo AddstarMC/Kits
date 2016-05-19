@@ -1,37 +1,34 @@
 package com.dragonphase.kits.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.dragonphase.kits.Kits;
 import com.dragonphase.kits.api.events.PlayerSpawnKitEvent;
 import com.dragonphase.kits.permissions.Permissions;
 import com.dragonphase.kits.util.FlagType;
 import com.dragonphase.kits.util.Message;
-import com.dragonphase.kits.util.Utils;
 import com.dragonphase.kits.util.Message.MessageType;
+import com.dragonphase.kits.util.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class KitManager {
 
-    private Kits plugin;
+    private final Kits plugin;
 
     public KitManager(Kits instance) {
         plugin = instance;
     }
 
     /**
-     * Creates a new kit using default values:
-     * delay = 0
-     * overwrite = true
-     * announce = true
+     * Creates a new kit using default values: delay = 0 overwrite = true announce = true
      *
      * @param kitName The name of the kit to create
      * @param contents The contents of the kit
@@ -219,7 +216,7 @@ public class KitManager {
      * @param flags The flags to spawn the Kit with
      * @throws KitException If the kit does not exist
      */
-    public void spawnKit(Player player, String kitName, HashMap<String, Boolean> flags) throws KitException {
+    public void spawnKit(Player player, String kitName, Map<String, Boolean> flags) throws KitException {
         if (kitExists(kitName)) spawnKit(player, getKit(kitName), flags);
         else throw new KitException("The kit " + kitName + " does not exist.");
     }
@@ -244,7 +241,7 @@ public class KitManager {
      */
     public void spawnKit(Player player, Kit kit, String... flags) {
         List<String> flagList = Arrays.asList(flags);
-        HashMap<String, Boolean> flagMap = new HashMap<String, Boolean>();
+        Map<String, Boolean> flagMap = new HashMap<>();
 
         for (String flag : flagList) {
             if (flag.isEmpty() || flag.length() < 2) continue;
@@ -261,7 +258,7 @@ public class KitManager {
      * @param kit The Kit to spawn
      * @param flags The flags to spawn the Kit with
      */
-    public void spawnKit(Player player, Kit kit, HashMap<String, Boolean> flags) {
+    public void spawnKit(Player player, Kit kit, Map<String, Boolean> flags) {
         long delay = Permissions.hasPermission(player, Permissions.KITS_NODELAY, kit.getName()) ? 0 : kit.getDelay();
         boolean clear = kit.getClear();
         boolean overwrite = kit.getOverwrite();
@@ -320,11 +317,11 @@ public class KitManager {
             return;
         }
         
-        List<ItemStack> items = new ArrayList<ItemStack>(Arrays.asList(event.getKit().getItems()));
+        List<ItemStack> items = new ArrayList<>(Arrays.asList(event.getKit().getItems()));
         java.util.Collections.replaceAll(items, null, new ItemStack(Material.AIR));
 
         ItemStack[] armor = new ItemStack[]{items.remove(0), items.remove(0), items.remove(0), items.remove(0)};
-        ArrayUtils.reverse(armor);
+        Collections.reverse(Arrays.asList(armor));
 
         for (int i = 0; i < 5; i++)
             items.remove(0);
@@ -342,21 +339,18 @@ public class KitManager {
             }
             
             for (int i = 0; i < items.size(); i++) {
-                if (player.getInventory().getItem(i + 9 < 36 ? i + 9 : i - 27) != null
-                        && items.get(i).getType() == Material.AIR) continue;
+                if (player.getInventory().getItem(i + 9 < 36 ? i + 9 : i - 27) != null && items.get(i).getType() == Material.AIR) continue;
                 player.getInventory().setItem(i + 9 < 36 ? i + 9 : i - 27, items.get(i));
             }
         } else {
             player.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
             
             for (int i = 0; i < armor.length; i ++) {
-                if (player.getInventory().getArmorContents()[i] == null || player.getInventory().getArmorContents()[i].getType() == Material.AIR)
-                    player.getInventory().setItem(player.getInventory().getSize() + i, armor[i]);
+                if (player.getInventory().getArmorContents()[i] == null || player.getInventory().getArmorContents()[i].getType() == Material.AIR) player.getInventory().setItem(player.getInventory().getSize() + i, armor[i]);
             }
         }
 
-        if (event.getDelay() > 0)
-            plugin.getCollectionManager().getDelayedPlayer(player).addKit(kit, event.getDelay() - kit.getDelay());
+        if (event.getDelay() > 0) plugin.getCollectionManager().getDelayedPlayer(player).addKit(kit, event.getDelay() - kit.getDelay());
 
         if (event.getAnnounce()) {
             player.sendMessage(Message.show("", "Kit " + kit.getName() + " spawned.", MessageType.INFO));
