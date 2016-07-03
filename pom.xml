@@ -49,7 +49,7 @@
         <dependency>
             <groupId>mkremins</groupId>
             <artifactId>fanciful</artifactId>
-            <version>0.3.3-SNAPSHOT</version>
+            <version>0.3.5-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
