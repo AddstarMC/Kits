@@ -1,6 +1,7 @@
 package com.dragonphase.kits.configuration;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,7 +19,7 @@ public class Config extends YamlConfiguration {
         createFiles();
     }
 
-    public void createFiles() {
+    private void createFiles() {
         try {
             File file = new File(plugin.getDataFolder(), fileName);
             if (!file.exists()) {
@@ -43,7 +44,7 @@ public class Config extends YamlConfiguration {
         if (plugin.getResource(fileName) != null) {
             YamlConfiguration temp = new YamlConfiguration();
             try {
-                temp.load(plugin.getResource(fileName));
+                temp.load(new InputStreamReader(plugin.getResource(fileName)));
             } catch (Exception ignored) {
             }
 
@@ -63,7 +64,7 @@ public class Config extends YamlConfiguration {
         }
     }
 
-    public void save() {
+    void save() {
         try {
             save(new File(plugin.getDataFolder(), fileName));
         } catch (Exception ignored) {
