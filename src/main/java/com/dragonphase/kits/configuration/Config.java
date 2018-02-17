@@ -39,12 +39,11 @@ public class Config extends YamlConfiguration {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void copyDefaults() {
         if (plugin.getResource(fileName) != null) {
             YamlConfiguration temp = new YamlConfiguration();
             try {
-                temp.load(new InputStreamReader(plugin.getResource(fileName)));
+                temp.load( new InputStreamReader(plugin.getResource(fileName)));
             } catch (Exception ignored) {
             }
 

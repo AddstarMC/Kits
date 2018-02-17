@@ -9,13 +9,26 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
-        <plugin.version>${project.version}-${build.number}</plugin.version>
         <build.number/>
+        <spigot.version>1.12.2-R0.1-SNAPSHOT</spigot.version>
+        <plugin.version>${project.version}-${build.number}</plugin.version>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>maven.addstar.com.au</id>
+            <name>maven.addstar.com.au-releases</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven.addstar.com.au</id>
+            <name>maven.addstar.com.au-snapshots</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
     <repositories>
         <repository>
             <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>gravity-repo</id>
@@ -47,7 +60,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.11-R0.1-SNAPSHOT</version>
+            <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -58,6 +71,7 @@
         </dependency>
     </dependencies>
     <build>
+        <defaultGoal>clean install</defaultGoal>
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
