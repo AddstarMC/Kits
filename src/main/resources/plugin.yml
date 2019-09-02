@@ -1,6 +1,7 @@
 name: ${project.name}
 main: ${project.groupId}.${project.artifactId}
 version: ${project.version}
+api-version: 1.13
 website: http://dragonphase.com/
 depend: []
 description: >
