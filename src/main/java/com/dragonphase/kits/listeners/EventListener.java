@@ -23,6 +23,7 @@ import com.dragonphase.kits.permissions.Permissions;
 import com.dragonphase.kits.util.Message;
 import com.dragonphase.kits.util.Utils;
 import com.dragonphase.kits.util.Message.MessageType;
+import org.bukkit.inventory.InventoryView;
 
 public class EventListener implements Listener {
     public final Kits plugin;
@@ -33,9 +34,9 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getInventory().getName().toLowerCase().startsWith("new kit: ")) CreateKit((Player) event.getPlayer(), event.getInventory());
+        if (event.getView().getTitle().toLowerCase().startsWith("new kit: ")) CreateKit((Player) event.getPlayer(), event.getView());
 
-        if (event.getInventory().getName().toLowerCase().startsWith("edit kit: ")) EditKit((Player) event.getPlayer(), event.getInventory());
+        if (event.getView().getTitle().toLowerCase().startsWith("edit kit: ")) EditKit((Player) event.getPlayer(), event.getView());
     }
 
     @SuppressWarnings("deprecation")
@@ -43,7 +44,7 @@ public class EventListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) return;
         if (event.isBlockInHand()) return;
-        if (event.getClickedBlock() == null || (event.getClickedBlock().getType() != Material.SIGN_POST && event.getClickedBlock().getType() != Material.WALL_SIGN)) return;
+        if (event.getClickedBlock() == null || (event.getClickedBlock().getType() != Material.OAK_SIGN && event.getClickedBlock().getType() != Material.OAK_WALL_SIGN)) return;
 
         Sign sign = (Sign) event.getClickedBlock().getState();
 
@@ -83,20 +84,20 @@ public class EventListener implements Listener {
 
     // Helper methods
 
-    public void CreateKit(Player player, Inventory inventory) {
-        String inventoryName = inventory.getName().toLowerCase().replace("new kit: ", "");
+    public void CreateKit(Player player, InventoryView inventory) {
+        String inventoryName = inventory.getTitle().toLowerCase().replace("new kit: ", "");
 
-        Kit kit = plugin.getKitManager().createKit(inventoryName, inventory.getContents());
+        Kit kit = plugin.getKitManager().createKit(inventoryName, inventory.getTopInventory().getContents());
         plugin.getCollectionManager().save();
         player.sendMessage(Message.show("Kit " + kit.getName() + " created.", MessageType.INFO));
     }
 
-    public void EditKit(Player player, Inventory inventory) {
-        String inventoryName = inventory.getName().toLowerCase().replace("edit kit: ", "");
+    public void EditKit(Player player, InventoryView inventory) {
+        String inventoryName = inventory.getTitle().toLowerCase().replace("edit kit: ", "");
 
         String name = Utils.capitalize(inventoryName);
 
-        plugin.getCollectionManager().getKit(name).setItems(inventory.getContents());
+        plugin.getCollectionManager().getKit(name).setItems(inventory.getTopInventory().getContents());
 
         player.sendMessage(Message.show("Kit " + name + " edited.", MessageType.INFO));
 
