@@ -8,8 +8,9 @@ import com.dragonphase.kits.util.Message;
 import com.dragonphase.kits.util.Message.MessageType;
 import com.dragonphase.kits.util.Time;
 import com.dragonphase.kits.util.Utils;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,20 +48,22 @@ public class KitsCommandExecutor implements CommandExecutor {
         }
 
         if (plugin.getCollectionManager().getKits().size() < 1) {
-            sender.sendMessage(Message.show("There are no available kits.", MessageType.WARNING));
+            Message.showMessage(sender,Message.show("There are no available kits.", MessageType.WARNING));
             return;
         }
 
         if (!(sender instanceof Player)) {
-            String message = "Available kits: ";
-            
-            List<String> kitNames = new ArrayList<>();
+            TextComponent.Builder kitName = TextComponent.builder().content("Available Kits: ");
+            int i = 0;
+            int total = plugin.getCollectionManager().getKits().size();
             for (Kit kit : plugin.getCollectionManager().getKits()) {
-                kitNames.add(ChatColor.DARK_AQUA + kit.getName());
+                i++;
+                kitName = kitName.append(TextComponent.of(kit.getName()).color(NamedTextColor.DARK_AQUA));
+                if(i < total) {
+                    kitName = kitName.append(TextComponent.of(", "));
+                }
             }
-            
-            sender.sendMessage(message + StringUtils.join(kitNames, ", "));
-            
+            Message.showMessage(sender,kitName.build());
             return;
         }
         
@@ -73,30 +76,43 @@ public class KitsCommandExecutor implements CommandExecutor {
             
             boolean delayed = plugin.getCollectionManager().getDelayedPlayer(player).playerDelayed(kit);
             
-            List<String> lines = new ArrayList<>();
-            List<String> items = new ArrayList<>();
+            List<TextComponent> items = new ArrayList<>();
             
             for (ItemStack item : kit.getItems()) {
                 if (item == null) continue;
-                items.add(item.getAmount() + " x " + (item.hasItemMeta() ? item.getItemMeta().getDisplayName() : Utils.capitalize(item.getType().name())));
+                items.add(TextComponent.of(item.getAmount() + " x " + (
+                      (item.hasItemMeta() && item.getItemMeta() != null) ?
+                            item.getItemMeta().getDisplayName() :
+                            Utils.capitalize(item.getType().name()))));
             }
-            
-            lines.add(ChatColor.GOLD + "Number of items: " + ChatColor.GRAY + items.size());
-            lines.add(ChatColor.GOLD + "Delay: " + (kit.getDelay() <= 0 ? ChatColor.GRAY + "no delay" : ChatColor.GRAY + Time.fromMilliseconds(kit.getDelay()).toReadableFormat(false)));
-            lines.add(ChatColor.GOLD + "Clear: " + ChatColor.GRAY + kit.getClear());
-            lines.add(ChatColor.GOLD + "Overwrite: " + ChatColor.GRAY + kit.getOverwrite());
-            lines.add(ChatColor.GOLD + "Announce: " + ChatColor.GRAY + kit.getAnnounce());
-            
+            TextComponent.Builder displayTextBuilder = TextComponent.builder()
+                  .append(TextComponent.of("Number of items: ").color(NamedTextColor.GOLD)).append(TextComponent.of(items.size())).append(TextComponent.newline())
+                  .append(TextComponent.of("Delay: ").color(NamedTextColor.GOLD)).append(TextComponent.of(kit.getDelay() <= 0 ? "no delay" : Time.fromMilliseconds(kit.getDelay()).toReadableFormat(false))).append(TextComponent.newline())
+                  .append(TextComponent.of("Clear: ").color(NamedTextColor.GOLD)).append(TextComponent.of(kit.getClear())).append(TextComponent.newline())
+                  .append(TextComponent.of("Overwrite: ").color(NamedTextColor.GOLD)).append(TextComponent.of(kit.getOverwrite())).append(TextComponent.newline())
+                  .append(TextComponent.of("Announce: ").color(NamedTextColor.GOLD)).append(TextComponent.of(kit.getAnnounce())).append(TextComponent.newline());
             if (delayed) {
-                lines.add(" ");
-                lines.add(ChatColor.GOLD + "Remaining time: " + ChatColor.RED + plugin.getCollectionManager().getDelayedPlayer(player).getRemainingTime(kit));
+                displayTextBuilder
+                      .append(TextComponent.of("Remaining time: ").color(NamedTextColor.GOLD))
+                      .append(TextComponent.of(plugin.getCollectionManager().getDelayedPlayer(player).getRemainingTime(kit))
+                            .color(NamedTextColor.RED))
+                      .append(TextComponent.newline());
             }
-            
-            commands.add(new CommandDescription((delayed ? ChatColor.RED + "" + ChatColor.STRIKETHROUGH : ChatColor.GOLD + "") + kit.getName(), delayed ? "" : "/kit " + kit.getName(), lines.toArray(new String[lines.size()])));
+            TextComponent displayText = displayTextBuilder.build();
+            TextComponent.Builder titleBuilder = TextComponent.builder();
+            titleBuilder.content(kit.getName());
+            String command;
+            if (delayed) {
+                titleBuilder.color(NamedTextColor.RED).decoration(TextDecoration.STRIKETHROUGH, TextDecoration.State.TRUE);
+                command = "";
+            } else {
+                titleBuilder.color(NamedTextColor.GOLD);
+                command = "/kit "+kit.getName();
+            }
+            commands.add(new CommandDescription(titleBuilder.build(),command, displayText));
         }
-
-        player.sendMessage(ChatColor.YELLOW + "Kits available to you:");
-        Message.showCommand(player, " ", commands.toArray(new CommandDescription[commands.size()]));
+        Message.showMessage(player,TextComponent.of("Kits available to you:").color(NamedTextColor.GOLD));
+        Message.showCommand(player, " ", commands.toArray(new CommandDescription[0]));
     }
 
     private void handleReload(CommandSender sender) {
@@ -105,6 +121,6 @@ public class KitsCommandExecutor implements CommandExecutor {
         }
         
         plugin.reload();
-        sender.sendMessage(Message.show("Reloaded configurations.", MessageType.INFO));
+        Message.showMessage(sender,Message.show("Reloaded configurations.", MessageType.INFO));
     }
 }

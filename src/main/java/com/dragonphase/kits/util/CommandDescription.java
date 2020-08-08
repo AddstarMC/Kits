@@ -1,28 +1,31 @@
 package com.dragonphase.kits.util;
 
-public class CommandDescription {
-    private String title, command;
-    private String[] args;
+import net.kyori.adventure.text.TextComponent;
 
-    public CommandDescription(String title, String command, String... args) {
+public class CommandDescription {
+    private TextComponent title;
+    private String command;
+    private TextComponent[] args;
+
+    public CommandDescription(TextComponent title, String command, TextComponent... args) {
         setTitle(title);
         setCommand(command);
         setArgs(args);
     }
 
-    public String[] getArgs() {
+    public TextComponent[] getArgs() {
         return args;
     }
 
-    public void setArgs(String[] args) {
+    public void setArgs(TextComponent[] args) {
         this.args = args;
     }
 
-    public String getTitle() {
+    public TextComponent getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(TextComponent title) {
         this.title = title;
     }
 

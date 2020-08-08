@@ -54,30 +54,30 @@ public class KitCommandExecutor implements CommandExecutor {
 
     private void handleBaseCommand(CommandSender sender) {
         if (sender instanceof Player) {
-            sender.sendMessage(Message.show("", "Available commands:", MessageType.MESSAGE));
-            Message.showMessage((Player) sender, Message.show("", "  /kits", MessageType.INFO), "List the kits available to you.");
-            Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Spawn the kit with the specified name.");
+            Message.sendMessage(sender, Message.show("", "Available commands:", MessageType.MESSAGE));
+            Message.showMessage(sender, Message.show("", "  /kits", MessageType.INFO), "List the kits available to you.");
+            Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Spawn the kit with the specified name.");
             if (sender.hasPermission(Permissions.KITS_ADMIN)) {
-                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "With the specified flags. Example:", "/kit basic -announce");
-                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.");
-                Message.showMessage((Player) sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.", "With the specified flags. Example:", "/kit basic bob -announce");
-            	Message.showMessage((Player) sender, Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
-            	Message.showMessage((Player) sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
-            	Message.showMessage((Player) sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
-            	Message.showMessage((Player) sender, Message.show("", "  /kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
+                Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "With the specified flags. Example:", "/kit basic -announce");
+                Message.showMessage( sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.");
+                Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.", "With the specified flags. Example:", "/kit basic bob -announce");
+            	Message.showMessage(sender, Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
+            	Message.showMessage(sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
+            	Message.showMessage(sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
+            	Message.showMessage(sender, Message.show("", "  /kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
             }
         } else {
-            sender.sendMessage(Message.show("", "Available commands:", MessageType.MESSAGE));
-            sender.sendMessage(Message.show("", "/kits", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO));
-            sender.sendMessage(Message.show("", "/kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "Available commands:", MessageType.MESSAGE));
+            Message.sendMessage(sender,Message.show("", "/kits", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO));
+            Message.sendMessage(sender,Message.show("", "/kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO));
         }
     }
 
@@ -96,17 +96,17 @@ public class KitCommandExecutor implements CommandExecutor {
         }
 
         if (args.length > 1) {
-            player.sendMessage(Message.show("", "Kit names cannot contain spaces.", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("", "Kit names cannot contain spaces.", MessageType.WARNING));
             return;
         }
 
         if (plugin.getKitManager().kitExists(args[0])) {
-            player.sendMessage(Message.show("", "Kit " + args[0] + " already exists.", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("", "Kit " + args[0] + " already exists.", MessageType.WARNING));
             return;
         }
 
         if (args[0].length() > 22) {
-            player.sendMessage(Message.show("", "Kit name cannot exceed 22 characters.", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("", "Kit name cannot exceed 22 characters.", MessageType.WARNING));
             return;
         }
 
@@ -130,7 +130,7 @@ public class KitCommandExecutor implements CommandExecutor {
         }
 
         if (!plugin.getKitManager().kitExists(args[0])) {
-            player.sendMessage(Message.show("", "Kit " + args[0] + " does not exist.", MessageType.WARNING));
+            Message.showMessage(player,Message.show("", "Kit " + args[0] + " does not exist.", MessageType.WARNING));
             return;
         }
 
@@ -174,7 +174,7 @@ public class KitCommandExecutor implements CommandExecutor {
 
         boolean value = args[0].equalsIgnoreCase("true");
         plugin.getKitManager().editKit(kit, kit.getItems(), kit.getDelay(), kit.getClear(), value, kit.getAnnounce());
-        player.sendMessage(Message.show("", "Overwrite for kit " + kit.getName() + " set to " + value, MessageType.INFO));
+        Message.showMessage(player,Message.show("", "Overwrite for kit " + kit.getName() + " set to " + value, MessageType.INFO));
     }
 
     public void editKitAnnounce(Player player, Kit kit, String[] args) {
@@ -185,7 +185,7 @@ public class KitCommandExecutor implements CommandExecutor {
 
         boolean value = args[0].equalsIgnoreCase("true");
         plugin.getKitManager().editKit(kit, kit.getItems(), kit.getDelay(), kit.getClear(), kit.getOverwrite(), value);
-        player.sendMessage(Message.show("", "Announce for kit " + kit.getName() + " set to " + value, MessageType.INFO));
+        Message.showMessage(player,Message.show("", "Announce for kit " + kit.getName() + " set to " + value, MessageType.INFO));
     }
 
     public void editKitClear(Player player, Kit kit, String[] args) {
@@ -196,7 +196,7 @@ public class KitCommandExecutor implements CommandExecutor {
 
         boolean value = args[0].equalsIgnoreCase("true");
         plugin.getKitManager().editKit(kit, kit.getItems(), kit.getDelay(), value, kit.getOverwrite(), kit.getAnnounce());
-        player.sendMessage(Message.show("", "Clear for kit " + kit.getName() + " set to " + value, MessageType.INFO));
+        Message.showMessage(player, Message.show("", "Clear for kit " + kit.getName() + " set to " + value, MessageType.INFO));
     }
 
     public void editKitDelay(Player player, Kit kit, String[] args) {
@@ -208,9 +208,9 @@ public class KitCommandExecutor implements CommandExecutor {
         try {
             Time value = Time.fromExpression(StringUtils.join(args, " "));
             plugin.getKitManager().editKit(kit, kit.getItems(), value.getTotalMilliseconds(), kit.getClear(), kit.getOverwrite(), kit.getAnnounce());
-            player.sendMessage(Message.show("", "Delay for kit " + kit.getName() + " set to " + StringUtils.join(args, " "), MessageType.INFO));
+            Message.sendMessage(player,Message.show("", "Delay for kit " + kit.getName() + " set to " + StringUtils.join(args, " "), MessageType.INFO));
         } catch (Exception ex) {
-            player.sendMessage(Message.show("", "Incorrect delay format. Example: 1h30m for 1 hour 30 minute delay.", MessageType.WARNING));
+            Message.sendMessage(player,Message.show("", "Incorrect delay format. Example: 1h30m for 1 hour 30 minute delay.", MessageType.WARNING));
         }
     }
 
@@ -230,9 +230,9 @@ public class KitCommandExecutor implements CommandExecutor {
 
         try {
             plugin.getKitManager().removeKit(args[0]);
-            player.sendMessage(Message.show("", "Kit " + args[0] + " removed.", MessageType.INFO));
+            Message.sendMessage(player,Message.show("", "Kit " + args[0] + " removed.", MessageType.INFO));
         } catch (KitException e) {
-            player.sendMessage(Message.show("", "Kit " + args[0] + " does not exist.", MessageType.WARNING));
+            Message.sendMessage(player,Message.show("", "Kit " + args[0] + " does not exist.", MessageType.WARNING));
         }
     }
 
@@ -245,11 +245,13 @@ public class KitCommandExecutor implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.show("Usage", "kit " + ChatColor.ITALIC + "kitname playername", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("Usage", "kit " + ChatColor.ITALIC + "kitname playername", MessageType.WARNING));
             return;
         }
 
-        if (spawnKit(sender, args[0], args[1], StringUtils.join(Utils.trim(Utils.trim(args)), " "))) sender.sendMessage(Message.show("", "Kit " + args[0] + " spawned for " + args[1] + ".", MessageType.INFO));
+        if (spawnKit(sender, args[0], args[1], StringUtils.join(Utils.trim(Utils.trim(args)), " "))) {
+            Message.showMessage(sender,Message.show("", "Kit " + args[0] + " spawned for " + args[1] + ".", MessageType.INFO));
+        }
     }
 
     private void spawnKit(Player player, String[] args) {
@@ -264,8 +266,9 @@ public class KitCommandExecutor implements CommandExecutor {
         if (args.length > 1 && (!args[1].startsWith("+") && !args[1].startsWith("-"))) {
             if (!Permissions.checkPermission(player, Permissions.KITS_SPAWN_OTHERS + "." + args[0].toLowerCase())) return;
 
-            if (spawnKit(player, args[0], args[1], StringUtils.join(Utils.trim(Utils.trim(args)), " "))) player.sendMessage(Message.show("", "Kit " + args[0] + " spawned for " + args[1] + ".", MessageType.INFO));
-
+            if (spawnKit(player, args[0], args[1], StringUtils.join(Utils.trim(Utils.trim(args)), " "))) {
+                Message.sendMessage(player,Message.show("", "Kit " + args[0] + " spawned for " + args[1] + ".", MessageType.INFO));
+            }
             return;
         }
 
@@ -276,12 +279,12 @@ public class KitCommandExecutor implements CommandExecutor {
         Player player = getPlayer(playerName);
 
         if (player == null) {
-            sender.sendMessage(Message.show("", playerName + " is not online. Make sure the name is typed correctly.", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("", playerName + " is not online. Make sure the name is typed correctly.", MessageType.WARNING));
             return false;
         }
 
         if (!plugin.getKitManager().kitExists(kitName)) {
-            sender.sendMessage(Message.show("", "Kit " + kitName + " does not exist. Make sure the name is typed correctly.", MessageType.WARNING));
+            Message.sendMessage(sender,Message.show("", "Kit " + kitName + " does not exist. Make sure the name is typed correctly.", MessageType.WARNING));
             return false;
         }
 
@@ -295,7 +298,7 @@ public class KitCommandExecutor implements CommandExecutor {
         for (String flag : flagList) {
             if (flag.isEmpty() || flag.length() < 2) continue;
             if (sender instanceof Player && !Permissions.hasPermission((Player) sender, Permissions.KITS_FLAGS, flag.replace("+", "").replace("-", ""))) {
-                sender.sendMessage(Message.show("", "You do not have permission to use the " + flag.replace("+", "").replace("-", "") + " flag.", MessageType.WARNING));
+                Message.sendMessage(sender,Message.show("", "You do not have permission to use the " + flag.replace("+", "").replace("-", "") + " flag.", MessageType.WARNING));
                 continue;
             }
             Flags.put(flag.replace("+", "").replace("-", ""), !flag.startsWith("-"));
@@ -334,7 +337,7 @@ public class KitCommandExecutor implements CommandExecutor {
         if (plugin.getCollectionManager().getDelayedPlayer(player).playerDelayed(kit) && kit.getDelay() == delay && delay > 0) {
             if (announce) {
                 String message = (sender instanceof Player && sender.getName().equalsIgnoreCase(player.getName()) ? "You are " : player.getName() + " is ") + "currently delayed for kit " + kit.getName() + ". Remaining time:\n " + plugin.getCollectionManager().getDelayedPlayer(player).getRemainingTime(kit);
-                sender.sendMessage(Message.show("", message, MessageType.WARNING));
+                Message.sendMessage(sender,Message.show("", message, MessageType.WARNING));
             }
             return false;
         }
@@ -350,7 +353,7 @@ public class KitCommandExecutor implements CommandExecutor {
         if (sender instanceof Player) {
             return false;
         }
-        sender.sendMessage(Message.show("", "Command must be issued ingame.", MessageType.WARNING));
+        Message.sendMessage(sender,Message.show("", "Command must be issued ingame.", MessageType.WARNING));
         return true;
     }
 

@@ -353,7 +353,7 @@ public class KitManager {
         if (event.getDelay() > 0) plugin.getCollectionManager().getDelayedPlayer(player).addKit(kit, event.getDelay() - kit.getDelay());
 
         if (event.getAnnounce()) {
-            player.sendMessage(Message.show("", "Kit " + kit.getName() + " spawned.", MessageType.INFO));
+            Message.sendMessage(player,Message.show("", "Kit " + kit.getName() + " spawned.", MessageType.INFO));
         }
 
     }

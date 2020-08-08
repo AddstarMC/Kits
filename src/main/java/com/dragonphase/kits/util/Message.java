@@ -4,8 +4,9 @@ import com.dragonphase.kits.Kits;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,47 +21,66 @@ public class Message {
         WARNING
     }
 
-    public static String show(String message, MessageType type) {
+    public static TextComponent show(String message, MessageType type) {
         return show("", message, type);
     }
 
-    public static String show(String prefix, String message, MessageType type) {
-        return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.YELLOW : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
+    public static TextComponent show(String prefix, String message, MessageType type) {
+        NamedTextColor color;
+        switch (type){
+            case INFO:
+                color = NamedTextColor.GOLD;
+                break;
+            case MESSAGE:
+            default:
+                color = NamedTextColor.YELLOW;
+                break;
+            case WARNING:
+                color = NamedTextColor.RED;
+                      break;
+        }
+        return TextComponent.builder()
+              .content(prefix)
+              .color(color)
+              .append(LegacyComponentSerializer.legacySection().deserialize(message))
+              .build();
     }
-
-    public static void showMessage(Player player, String title, String... args) {
+    public static void showMessage(CommandSender player, TextComponent title, String... args) {
         if (args.length < 1) {
-            player.sendMessage(title);
+            sendMessage(player,title);
             return;
         }
         TextComponent.Builder builder = TextComponent.builder();
         for (String arg : args) {
-            builder.content(arg).append(TextComponent.newline());
+            builder = builder.content(arg).append(TextComponent.newline());
         }
         TextComponent showText = builder.build();
-        TextComponent component = TextComponent.builder()
-              .content(title)
-              .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText))
-              .build();
+        TextComponent component = title
+              .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText));
         Kits.audiences.audience(player).sendMessage(component);
     }
+    public static void showMessage(CommandSender player, String title, String... args) {
+        if (args.length < 1) {
+            player.sendMessage(title);
+            return;
+        }
+        showMessage(player,TextComponent.of(title),args);
+    }
 
-    public static TextComponent showCommand(Player player, CommandDescription command) {
+    public static TextComponent showCommand(CommandDescription command) {
         if (command.getArgs().length < 1) {
-            return LegacyComponentSerializer.legacySection().deserialize(command.getTitle());
+            return command.getTitle();
         }
         TextComponent.Builder builder = TextComponent.builder();
-        for (String arg : command.getArgs()) {
-            builder
-                  .append(LegacyComponentSerializer.legacy(LegacyComponentSerializer.SECTION_CHAR).deserialize(arg))
+        for (TextComponent arg : command.getArgs()) {
+           builder = builder
+                  .append(arg)
                   .append(TextComponent.newline());
         }
         TextComponent showText = builder.build();
-        return TextComponent.builder()
-              .content(command.getTitle())
+        return command.getTitle()
               .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText))
-              .clickEvent(ClickEvent.runCommand(command.getCommand()))
-              .build();
+              .clickEvent(ClickEvent.runCommand(command.getCommand()));
     }
 
     public static void showCommand(Player player, String prefix, CommandDescription... commands) {
@@ -70,16 +90,16 @@ public class Message {
         int i = 0;
         for (CommandDescription command : commandList) {
             i++;
-            component.append(showCommand(player, command));
+            component = component.append(showCommand(command));
             if (i < total) {
-                component.append(TextComponent.of(", "));
+                component = component.append(TextComponent.of(", "));
             }
 
         }
         sendMessage(player, component);
     }
 
-    public static void sendMessage(Player player, TextComponent component) {
+    public static void sendMessage(CommandSender player, TextComponent component) {
         Kits.audiences.audience(player).sendMessage(component);
     }
     //public static void sendJSONMessage(Player player, FancyMessage message) {

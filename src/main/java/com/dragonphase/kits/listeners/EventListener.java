@@ -1,9 +1,12 @@
 package com.dragonphase.kits.listeners;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.dragonphase.kits.Kits;
+import com.dragonphase.kits.api.Kit;
+import com.dragonphase.kits.api.KitException;
+import com.dragonphase.kits.permissions.Permissions;
+import com.dragonphase.kits.util.Message;
+import com.dragonphase.kits.util.Message.MessageType;
+import com.dragonphase.kits.util.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -14,16 +17,11 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
-
-import com.dragonphase.kits.Kits;
-import com.dragonphase.kits.api.Kit;
-import com.dragonphase.kits.api.KitException;
-import com.dragonphase.kits.permissions.Permissions;
-import com.dragonphase.kits.util.Message;
-import com.dragonphase.kits.util.Utils;
-import com.dragonphase.kits.util.Message.MessageType;
 import org.bukkit.inventory.InventoryView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EventListener implements Listener {
     public final Kits plugin;
@@ -58,13 +56,13 @@ public class EventListener implements Listener {
         String[] arrayLines = Utils.trim(lines.toArray(new String[lines.size()]));
 
         if (!plugin.getKitManager().kitExists(arrayLines[0])) {
-            event.getPlayer().sendMessage(Message.show("", "The kit " + arrayLines[0] + " does not exist.", MessageType.WARNING));
+            Message.showMessage(event.getPlayer(), Message.show("", "The kit " + arrayLines[0] + " does not exist.", MessageType.WARNING));
             return;
         }
 
         if (plugin.getCollectionManager().getDelayedPlayer(event.getPlayer()).playerDelayed(plugin.getKitManager().getKit(arrayLines[0])) && !StringUtils.join(arrayLines).toLowerCase().contains("-delay")) {
             String message = "You are currently delayed for kit " + arrayLines[0] + ". Remaining time:\n " + plugin.getCollectionManager().getDelayedPlayer(event.getPlayer()).getRemainingTime(plugin.getKitManager().getKit(arrayLines[0]));
-            event.getPlayer().sendMessage(Message.show("", message, MessageType.WARNING));
+            Message.showMessage(event.getPlayer(),Message.show("", message, MessageType.WARNING));
             return;
         }
 
@@ -89,7 +87,7 @@ public class EventListener implements Listener {
 
         Kit kit = plugin.getKitManager().createKit(inventoryName, inventory.getTopInventory().getContents());
         plugin.getCollectionManager().save();
-        player.sendMessage(Message.show("Kit " + kit.getName() + " created.", MessageType.INFO));
+        Message.showMessage(player,Message.show("Kit " + kit.getName() + " created.", MessageType.INFO));
     }
 
     public void EditKit(Player player, InventoryView inventory) {
@@ -99,7 +97,7 @@ public class EventListener implements Listener {
 
         plugin.getCollectionManager().getKit(name).setItems(inventory.getTopInventory().getContents());
 
-        player.sendMessage(Message.show("Kit " + name + " edited.", MessageType.INFO));
+        Message.showMessage(player,Message.show("Kit " + name + " edited.", MessageType.INFO));
 
     }
 }
