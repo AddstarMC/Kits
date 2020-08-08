@@ -1,16 +1,16 @@
 package com.dragonphase.kits.util;
 
+import com.dragonphase.kits.Kits;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import mkremins.fanciful.FancyMessage;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class Message {
 
@@ -28,68 +28,61 @@ public class Message {
         return ChatColor.YELLOW + (prefix.isEmpty() ? "" : prefix + ": ") + (type == MessageType.MESSAGE ? ChatColor.YELLOW : type == MessageType.INFO ? ChatColor.GOLD : ChatColor.RED) + message;
     }
 
-    // FancyMessage commands
-
     public static void showMessage(Player player, String title, String... args) {
         if (args.length < 1) {
             player.sendMessage(title);
             return;
         }
-
-        FancyMessage message = new FancyMessage("").then(title).itemTooltip(getMessage(args));
-
-        sendJSONMessage(player, message);
+        TextComponent.Builder builder = TextComponent.builder();
+        for (String arg : args) {
+            builder.content(arg).append(TextComponent.newline());
+        }
+        TextComponent showText = builder.build();
+        TextComponent component = TextComponent.builder()
+              .content(title)
+              .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText))
+              .build();
+        Kits.audiences.audience(player).sendMessage(component);
     }
 
-    public static void showCommand(Player player, CommandDescription command) {
+    public static TextComponent showCommand(Player player, CommandDescription command) {
         if (command.getArgs().length < 1) {
-            player.sendMessage(command.getTitle());
-            return;
+            return LegacyComponentSerializer.legacySection().deserialize(command.getTitle());
         }
-
-        FancyMessage message = new FancyMessage("").then(command.getTitle()).itemTooltip(getMessage(command.getArgs())).command(command.getCommand());
-
-        sendJSONMessage(player, message);
+        TextComponent.Builder builder = TextComponent.builder();
+        for (String arg : command.getArgs()) {
+            builder
+                  .append(LegacyComponentSerializer.legacy(LegacyComponentSerializer.SECTION_CHAR).deserialize(arg))
+                  .append(TextComponent.newline());
+        }
+        TextComponent showText = builder.build();
+        return TextComponent.builder()
+              .content(command.getTitle())
+              .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText))
+              .clickEvent(ClickEvent.runCommand(command.getCommand()))
+              .build();
     }
 
     public static void showCommand(Player player, String prefix, CommandDescription... commands) {
-        FancyMessage message = new FancyMessage(prefix).color(ChatColor.GOLD);
-
+        TextComponent component = LegacyComponentSerializer.legacySection().deserialize(prefix);
         List<CommandDescription> commandList = new ArrayList<>(Arrays.asList(commands));
-
+        int total = commandList.size();
+        int i = 0;
         for (CommandDescription command : commandList) {
-            if (command.getArgs().length < 1) {
-                player.sendMessage(command.getTitle());
-                return;
+            i++;
+            component.append(showCommand(player, command));
+            if (i < total) {
+                component.append(TextComponent.of(", "));
             }
 
-            message = message.then(command.getTitle()).itemTooltip(getMessage(command.getArgs()));
-
-            if (!command.getCommand().isEmpty()) message = message.command(command.getCommand());
-
-            if (commandList.get(commandList.size() - 1) != command) message = message.then(", ").color(ChatColor.GRAY);
-
         }
-
-        sendJSONMessage(player, message);
+        sendMessage(player, component);
     }
 
-    public static ItemStack getMessage(String... args) {
-        ItemStack item = new ItemStack(Material.STONE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.RESET + args[0]);
-
-        List<String> lore = new ArrayList<>(Arrays.asList(Utils.trim(args)));
-        for (String line : lore)
-            lore.set(lore.indexOf(line), ChatColor.RESET + line);
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-
-        return item;
+    public static void sendMessage(Player player, TextComponent component) {
+        Kits.audiences.audience(player).sendMessage(component);
     }
-
-    public static void sendJSONMessage(Player player, FancyMessage message) {
-        message.send(player);
-    }
+    //public static void sendJSONMessage(Player player, FancyMessage message) {
+    // message.send(player);
+    // }
 }

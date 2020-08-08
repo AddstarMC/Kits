@@ -1,8 +1,5 @@
 package com.dragonphase.kits;
 
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.dragonphase.kits.api.Kit;
 import com.dragonphase.kits.api.KitManager;
 import com.dragonphase.kits.autosave.AutoSave;
@@ -13,13 +10,16 @@ import com.dragonphase.kits.configuration.Config;
 import com.dragonphase.kits.listeners.EventListener;
 import com.dragonphase.kits.util.DelayedPlayer;
 import com.dragonphase.kits.util.Time;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Kits extends JavaPlugin {
 
     private static Kits instance;
 
     private Config config;
-
+    public static BukkitAudiences audiences;
     private KitManager kitManager;
     private CollectionManager collectionManager;
 
@@ -38,7 +38,7 @@ public class Kits extends JavaPlugin {
         registerCommands();
         registerConfigurationSerializables();
         registerAutoSave();
-
+        audiences = BukkitAudiences.create(this);
         reload();
 
         instance = this;

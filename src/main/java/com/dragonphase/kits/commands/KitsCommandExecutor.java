@@ -1,9 +1,13 @@
 package com.dragonphase.kits.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.dragonphase.kits.Kits;
+import com.dragonphase.kits.api.Kit;
+import com.dragonphase.kits.permissions.Permissions;
+import com.dragonphase.kits.util.CommandDescription;
+import com.dragonphase.kits.util.Message;
+import com.dragonphase.kits.util.Message.MessageType;
+import com.dragonphase.kits.util.Time;
+import com.dragonphase.kits.util.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,14 +16,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.dragonphase.kits.Kits;
-import com.dragonphase.kits.api.Kit;
-import com.dragonphase.kits.permissions.Permissions;
-import com.dragonphase.kits.util.CommandDescription;
-import com.dragonphase.kits.util.Message;
-import com.dragonphase.kits.util.Time;
-import com.dragonphase.kits.util.Utils;
-import com.dragonphase.kits.util.Message.MessageType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KitsCommandExecutor implements CommandExecutor {
     private final Kits plugin;
