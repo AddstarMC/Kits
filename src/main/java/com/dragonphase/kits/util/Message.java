@@ -26,6 +26,10 @@ public class Message {
     }
 
     public static TextComponent show(String prefix, String message, MessageType type) {
+        return show(prefix,LegacyComponentSerializer.legacySection().deserialize(message),type);
+    }
+
+    public static TextComponent show(String prefix, TextComponent message, MessageType type) {
         NamedTextColor color;
         switch (type){
             case INFO:
@@ -42,29 +46,22 @@ public class Message {
         return TextComponent.builder()
               .content(prefix)
               .color(color)
-              .append(LegacyComponentSerializer.legacySection().deserialize(message))
+              .append(message)
               .build();
     }
-    public static void showMessage(CommandSender player, TextComponent title, String... args) {
+    public static void showMessage(CommandSender player, TextComponent title, TextComponent... args) {
         if (args.length < 1) {
             sendMessage(player,title);
             return;
         }
         TextComponent.Builder builder = TextComponent.builder();
-        for (String arg : args) {
-            builder = builder.content(arg).append(TextComponent.newline());
+        for (TextComponent arg : args) {
+            builder.append(arg).append(TextComponent.newline());
         }
         TextComponent showText = builder.build();
         TextComponent component = title
               .hoverEvent(HoverEvent.of(HoverEvent.Action.SHOW_TEXT, showText));
         Kits.audiences.audience(player).sendMessage(component);
-    }
-    public static void showMessage(CommandSender player, String title, String... args) {
-        if (args.length < 1) {
-            player.sendMessage(title);
-            return;
-        }
-        showMessage(player,TextComponent.of(title),args);
     }
 
     public static TextComponent showCommand(CommandDescription command) {

@@ -9,6 +9,8 @@ import com.dragonphase.kits.util.Message;
 import com.dragonphase.kits.util.Message.MessageType;
 import com.dragonphase.kits.util.Time;
 import com.dragonphase.kits.util.Utils;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,16 +57,39 @@ public class KitCommandExecutor implements CommandExecutor {
     private void handleBaseCommand(CommandSender sender) {
         if (sender instanceof Player) {
             Message.sendMessage(sender, Message.show("", "Available commands:", MessageType.MESSAGE));
-            Message.showMessage(sender, Message.show("", "  /kits", MessageType.INFO), "List the kits available to you.");
-            Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Spawn the kit with the specified name.");
+            Message.showMessage(sender, Message.show("", "  /kits", MessageType.INFO), TextComponent.of("List the kits available to you."));
+            Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname", MessageType.INFO), TextComponent.of("Spawn the kit with the specified name."));
             if (sender.hasPermission(Permissions.KITS_ADMIN)) {
-                Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "With the specified flags. Example:", "/kit basic -announce");
-                Message.showMessage( sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.");
-                Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO), "Spawn the kit with the specified name.", "For the player with the specified name.", "With the specified flags. Example:", "/kit basic bob -announce");
-            	Message.showMessage(sender, Message.show("", "  /kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
-            	Message.showMessage(sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
-            	Message.showMessage(sender, Message.show("", "  /kit edit " + ChatColor.ITALIC + "kitname [flagname] <flagvalue>", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
-            	Message.showMessage(sender, Message.show("", "  /kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
+                Message.showMessage(sender, Message.show("",
+                      "  /kit " + ChatColor.ITALIC + "kitname [flags]", MessageType.INFO),
+                      TextComponent.of("Spawn the kit with the specified name."),
+                      TextComponent.of("With the specified flags. Example:"),
+                      TextComponent.of("/kit basic -announce"));
+                Message.showMessage( sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername", MessageType.INFO),
+                      TextComponent.of("Spawn the kit with the specified name."),
+                      TextComponent.of("For the player with the specified name."));
+                Message.showMessage(sender, Message.show("", "  /kit " + ChatColor.ITALIC + "kitname playername [flags]", MessageType.INFO),
+                      TextComponent.of("Spawn the kit with the specified name."),
+                      TextComponent.of("For the player with the specified name."),
+                      TextComponent.of("With the specified flags. Example:"),
+                      TextComponent.of("/kit basic bob -announce"));
+            	Message.showMessage(sender, Message.show("",
+                      TextComponent.of("  /kit create ")
+                            .append(TextComponent.of("kitname")
+                                  .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                      TextComponent.of("Create a new kit with the specific name."));
+            	Message.showMessage(sender, Message.show("", TextComponent.of("  /kit edit ")
+                            .append(TextComponent.of("kitname")
+                                  .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                      TextComponent.of("Edit an existing kit with the specific name."));
+            	Message.showMessage(sender, Message.show("", TextComponent.of("  /kit edit ")
+                            .append(TextComponent.of("kitname [flagname] <flagvalue>")
+                                  .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                      TextComponent.of("Edit an existing kit's flags with the specific names."));
+            	Message.showMessage(sender, Message.show("",TextComponent.of("  /kit remove ")
+                            .append(TextComponent.of("kitname")
+                                  .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                      TextComponent.of("Remove an existing kit with the specific name."));
             }
         } else {
             Message.sendMessage(sender,Message.show("", "Available commands:", MessageType.MESSAGE));
@@ -91,7 +116,10 @@ public class KitCommandExecutor implements CommandExecutor {
         if (!Permissions.checkPermission(player, Permissions.KITS_ADMIN)) return;
 
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit create " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Create a new kit with the specific name.");
+            Message.showMessage(player, Message.show("Usage", TextComponent.of("  /kit create ")
+                        .append(TextComponent.of("kitname")
+                              .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                  TextComponent.of("Create a new kit with the specific name."));
             return;
         }
 
@@ -124,8 +152,17 @@ public class KitCommandExecutor implements CommandExecutor {
         if (!Permissions.checkPermission(player, Permissions.KITS_ADMIN)) return;
 
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Edit an existing kit with the specific name.");
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + "kitname flagname", MessageType.INFO), "Edit an existing kit's flags with the specific names.");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit edit ")
+                        .append(TextComponent.of("kitname")
+                              .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)),MessageType.INFO),
+                  TextComponent.of("Edit an existing kit with the specific name."));
+
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit edit ")
+                        .append(TextComponent.of("kitname flagname")
+                              .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)),MessageType.INFO),
+                  TextComponent.of("Edit an existing kit's flags with the specific names."));
             return;
         }
 
@@ -168,7 +205,12 @@ public class KitCommandExecutor implements CommandExecutor {
 
     public void editKitOverwrite(Player player, Kit kit, String[] args) {
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + kit.getName() + " overwrite [true|false]", MessageType.INFO), "Change the overwrite flag of " + kit.getName() + " to true or false.", "Current overwrite value: " + kit.getOverwrite() + ".");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit edit ")
+                        .append(TextComponent.of(kit.getName() + " overwrite [true|false]")
+                              .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)),MessageType.INFO),
+                  TextComponent.of("Change the overwrite flag of " + kit.getName() + " to true or false."),
+                  TextComponent.of("Current overwrite value: " + kit.getOverwrite() + "."));
             return;
         }
 
@@ -179,29 +221,41 @@ public class KitCommandExecutor implements CommandExecutor {
 
     public void editKitAnnounce(Player player, Kit kit, String[] args) {
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + kit.getName() + " announce [true|false]", MessageType.INFO), "Change the announce flag of " + kit.getName() + " to true or false.", "Current announce value: " + kit.getAnnounce() + ".");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit edit ")
+                        .append(TextComponent.of(kit.getName() + " announce [true|false]")
+                              .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)),MessageType.INFO),
+                  TextComponent.of("Change the announce flag of " + kit.getName() + " to true or false."),
+                  TextComponent.of("Current announce value: " + kit.getAnnounce() + "."));
             return;
         }
 
         boolean value = args[0].equalsIgnoreCase("true");
         plugin.getKitManager().editKit(kit, kit.getItems(), kit.getDelay(), kit.getClear(), kit.getOverwrite(), value);
-        Message.showMessage(player,Message.show("", "Announce for kit " + kit.getName() + " set to " + value, MessageType.INFO));
+        Message.showMessage(player,Message.show("",
+              TextComponent.of("Announce for kit " + kit.getName() + " set to " + value),MessageType.INFO));
     }
 
     public void editKitClear(Player player, Kit kit, String[] args) {
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + kit.getName() + " clear [true|false]", MessageType.INFO), "Change the clear flag of " + kit.getName() + " to true or false.", "Current clear value: " + kit.getClear() + ".");
+            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + kit.getName() + " clear [true|false]", MessageType.INFO),
+                  TextComponent.of("Change the clear flag of " + kit.getName() + " to true or false."),
+                  TextComponent.of("Current clear value: " + kit.getClear() + "."));
             return;
         }
 
         boolean value = args[0].equalsIgnoreCase("true");
         plugin.getKitManager().editKit(kit, kit.getItems(), kit.getDelay(), value, kit.getOverwrite(), kit.getAnnounce());
-        Message.showMessage(player, Message.show("", "Clear for kit " + kit.getName() + " set to " + value, MessageType.INFO));
+        Message.showMessage(player, Message.show("", TextComponent.of("Clear for kit " + kit.getName() + " set to " + value), MessageType.INFO));
     }
 
     public void editKitDelay(Player player, Kit kit, String[] args) {
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit edit " + ChatColor.ITALIC + kit.getName() + " delay [delay]", MessageType.INFO), "Change the delay flag of " + kit.getName() + ".", "Example: 1h30m for 1 hour 30 minute delay.");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit edit ").append(TextComponent.of(kit.getName() + " delay [delay]")
+                        .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.INFO),
+                  TextComponent.of("Change the delay flag of " + kit.getName() + "."),
+                  TextComponent.of("Example: 1h30m for 1 hour 30 minute delay."));
             return;
         }
 
@@ -224,7 +278,11 @@ public class KitCommandExecutor implements CommandExecutor {
         if (!Permissions.checkPermission(player, Permissions.KITS_ADMIN)) return;
 
         if (args.length < 1) {
-            Message.showMessage(player, Message.show("Usage", "/kit remove " + ChatColor.ITALIC + "kitname", MessageType.INFO), "Remove an existing kit with the specific name.");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit remove ")
+                        .append(TextComponent.of("kitname").decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE))
+                  , MessageType.INFO),
+                  TextComponent.of("Remove an existing kit with the specific name."));
             return;
         }
 
@@ -256,8 +314,14 @@ public class KitCommandExecutor implements CommandExecutor {
 
     private void spawnKit(Player player, String[] args) {
         if (args.length == 0) {
-            Message.showMessage(player, Message.show("Usage", "/kit " + ChatColor.ITALIC + "kitname", MessageType.WARNING), "Spawn the specified kit.");
-            Message.showMessage(player, Message.show("Usage", "/kit " + ChatColor.ITALIC + "kitname playername", MessageType.WARNING), "Spawn the specified kit for the specified player.");
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit ")
+                        .append(TextComponent.of("kitname").decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.WARNING),
+                  TextComponent.of("Spawn the specified kit."));
+            Message.showMessage(player, Message.show("Usage",
+                  TextComponent.of("/kit ")
+                        .append(TextComponent.of("kitname playername").decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)), MessageType.WARNING),
+                  TextComponent.of("Spawn the specified kit for the specified player."));
             return;
         }
 

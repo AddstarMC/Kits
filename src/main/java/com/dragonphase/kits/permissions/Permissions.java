@@ -1,11 +1,11 @@
 package com.dragonphase.kits.permissions;
 
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
 import com.dragonphase.kits.util.Message;
 import com.dragonphase.kits.util.Message.MessageType;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.entity.Player;
 
 public class Permissions {
 
@@ -26,7 +26,10 @@ public class Permissions {
 
     public static boolean checkPermission(Player player, String permission) {
         if (!player.hasPermission(permission.toLowerCase())) {
-            Message.showMessage(player, Message.show("", "You do not have permission to perform that action.", MessageType.WARNING), ChatColor.DARK_AQUA + "Required Permission node: " + ChatColor.GRAY + permission);
+            Message.showMessage(player, Message.show("",
+                  TextComponent.of("You do not have permission to perform that action."), MessageType.WARNING),
+                  TextComponent.of("Required Permission node: ").color(NamedTextColor.DARK_AQUA)
+                        .append(TextComponent.of(permission).color(NamedTextColor.GRAY)));
             return false;
         }
         return true;
